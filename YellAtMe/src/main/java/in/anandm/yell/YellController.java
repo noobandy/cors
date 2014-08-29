@@ -1,7 +1,5 @@
 package in.anandm.yell;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -28,18 +27,22 @@ public class YellController {
 
 	@RequestMapping(value = "/yells", method = RequestMethod.GET)
 	public @ResponseBody
-	ResponseEntity<List<Yell>> getYells() {
-		logger.info("loading yells");
-		return new ResponseEntity<List<Yell>>(
-				yellRepository.list(new YellQuery(null, null)), HttpStatus.OK);
+	ResponseEntity<QueryResult<Yell>> getYells(
+			@RequestParam(value = "page", required = true) int page,
+			@RequestParam(value = "pageSize", required = true) int pageSize) {
+
+		logger.info("loading yells : page {}, pageSize {}", page, pageSize);
+
+		return new ResponseEntity<QueryResult<Yell>>(
+				yellRepository.query(new YellQuery(page, pageSize)),
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/yells", method = RequestMethod.POST)
 	public @ResponseBody
 	ResponseEntity<Yell> addYell(@RequestBody Yell yell) {
-		logger.info("adding yell {0}", yell);
+		logger.info("adding yell : {}", yell);
 		yellRepository.saveYell(yell);
 		return new ResponseEntity<Yell>(yell, HttpStatus.CREATED);
 	}
-	
 }

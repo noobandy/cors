@@ -17,4 +17,5 @@ public interface YellRepository {
 
 	List<Yell> list(YellQuery query);
 
+	QueryResult<Yell> query(YellQuery query);
 }

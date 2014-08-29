@@ -4,6 +4,7 @@
 package in.anandm.yell;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -43,9 +44,26 @@ public class InMemoryYellRepository implements YellRepository {
 
 		if (query.getPage() != null && query.getPageSize() != null) {
 			int start = (query.getPage() - 1) * query.getPageSize();
-			return yells.subList(start, start + query.getPageSize() - 1);
+			int end = start + query.getPageSize() - 1;
+
+			if (start > yells.size()) {
+				return Collections.EMPTY_LIST;
+			}
+
+			if (yells.size() < end) {
+				end = yells.size();
+			}
+
+			return yells.subList(start, end);
 		}
 		return yells;
+	}
+
+	@Override
+	public QueryResult<Yell> query(YellQuery query) {
+		int count = count(query);
+		List<Yell> items = list(query);
+		return new QueryResult<Yell>(count, items);
 	}
 
 }

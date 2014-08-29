@@ -1,15 +1,20 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2014 by anonymous (http://jsbin.com/cabupamuvimo/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
 <html>
 <head>
-<title>Yell Client</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/bootstrap-cerulean.min.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
+  <meta charset="utf-8">
+  <title>Yell Client</title>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
 </head>
 <body>
-	<div class="container">
+  <div class="container">
 		<div class="row">
 			<div class="col-md-3"></div>
 			<div class="col-md-6">
@@ -26,16 +31,14 @@
 			<div class="col-md-3"></div>
 		</div>
 	</div>
-
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/jquery.atmosphere.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/yell.js"></script>
-	<script type="text/javascript">
-		$(document).ready(
+  
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/easyXDM/2.4.17.1/easyXDM.debug.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.atmosphere/2.1.2/jquery.atmosphere.min.js"></script>
+  
+<script id="jsbin-javascript">
+$(document).ready(
 				function() {
 					var yellList = $('#yellList');
 					var BASE_URL = 'http://localhost:8080/yell/'
@@ -70,16 +73,27 @@
 					;
 
 					function loadYells() {
-						$.getJSON(BASE_URL + 'api/yells?page=' + page
-								+ '&pageSize=' + pageSize, function(data) {
-
-							items = data.items;
+                      var rpc = new easyXDM.Rpc({
+    remote: BASE_URL+"resources/easyXDM/cors/index.html"
+},
+{
+    remote: {
+        request: {}
+    }
+});
+ 
+rpc.request({
+    url: BASE_URL + 'api/yells?page=' + page
+								+ '&pageSize=' + pageSize,
+    method: "GET"
+}, function(response){
+    data = JSON.parse(response.data);
+  items = data.items;
 							totalItems = data.count;
 							updateYellList();
 							adjustPaginationControl();
-						});
-					}
-					;
+});
+                    };
 
 					next.click(function(event) {
 						if (!$(this).hasClass('disabled')) {
@@ -145,23 +159,33 @@
 					$('#yellBox').on("keydown keypress", function(event) {
 						if (event.which === 13) {
 							var yell = {
+                                id: '',
 								yell : $('#yellBox').val(),
 								yelledAt : new Date()
 							};
 
 							$('#yellBox').val('');
 
-							$.ajax({
-								url : BASE_URL + 'api/yells',
-								method : 'POST',
-								contentType : 'Application/json',
-								cache : false,
-								data : JSON.stringify(yell),
-								success : function(data) {
-									subSocket.push(JSON.stringify(data));
-								}
-							});
-
+                          var rpc = new easyXDM.Rpc({
+    remote: BASE_URL+"resources/easyXDM/cors/index.html"
+},
+{
+    remote: {
+        request: {}
+    }
+});
+ 
+rpc.request({
+    url : BASE_URL + 'api/yells',
+    method : 'POST',
+  headers : {
+     "Content-Type": "application/json",
+  },
+    data : JSON.stringify(yell),
+    
+}, function(response){
+  subSocket.push(response.data);
+});
 							event.preventDefault();
 						}
 					});
@@ -199,6 +223,6 @@
 					};
 
 				});
-	</script>
+</script>
 </body>
 </html>

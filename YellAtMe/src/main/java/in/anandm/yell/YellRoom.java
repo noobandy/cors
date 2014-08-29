@@ -5,12 +5,13 @@ package in.anandm.yell;
 
 import java.io.IOException;
 
+import org.atmosphere.client.TrackMessageSizeInterceptor;
 import org.atmosphere.config.service.AtmosphereHandlerService;
 import org.atmosphere.cpr.AtmosphereResponse;
 import org.atmosphere.handler.OnMessage;
 import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
 import org.atmosphere.interceptor.BroadcastOnPostAtmosphereInterceptor;
-import org.atmosphere.interceptor.CorsInterceptor;
+import org.atmosphere.interceptor.HeartbeatInterceptor;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
@@ -18,13 +19,12 @@ import org.codehaus.jackson.map.ObjectMapper;
  * 
  */
 @AtmosphereHandlerService(path = "/yellRoom", interceptors = {
-		CorsInterceptor.class,
 		AtmosphereResourceLifecycleInterceptor.class,
-		BroadcastOnPostAtmosphereInterceptor.class })
+		BroadcastOnPostAtmosphereInterceptor.class,
+		TrackMessageSizeInterceptor.class, HeartbeatInterceptor.class })
 public class YellRoom extends OnMessage<String> {
 
 	private final ObjectMapper mapper = new ObjectMapper();
-
 
 	@Override
 	public void onMessage(AtmosphereResponse response, String message)
