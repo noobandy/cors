@@ -13,7 +13,7 @@ public interface YellRepository {
 
 	void saveYell(Yell yell);
 
-	int count(YellQuery query);
+	long count(YellQuery query);
 
 	List<Yell> list(YellQuery query);
 

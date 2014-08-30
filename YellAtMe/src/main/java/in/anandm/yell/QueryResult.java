@@ -11,20 +11,20 @@ import java.util.List;
  */
 public class QueryResult<T> {
 
-	private int count;
+	private long count;
 	private List<T> items;
 
 	/**
 	 * @param count
 	 * @param items
 	 */
-	public QueryResult(int count, List<T> items) {
+	public QueryResult(long count, List<T> items) {
 		super();
 		this.count = count;
 		this.items = items;
 	}
 
-	public int getCount() {
+	public long getCount() {
 		return count;
 	}
 

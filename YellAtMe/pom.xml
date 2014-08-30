@@ -9,7 +9,7 @@
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
 		<java-version>1.6</java-version>
-		<org.springframework-version>3.1.1.RELEASE</org.springframework-version>
+		<org.springframework-version>3.2.0.RELEASE</org.springframework-version>
 		<atmosphere.version>2.0.7</atmosphere.version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
@@ -34,6 +34,12 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
+		<!-- Data -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>1.5.1.RELEASE</version>
+		</dependency>
 		<!-- Atmosphere -->
 		<dependency>
 			<groupId>org.atmosphere</groupId>
@@ -43,8 +49,13 @@
 		<!-- Jakson json library -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.12</version>
+			<version>1.9.13</version>
 		</dependency>
 		<!-- AspectJ -->
 		<dependency>

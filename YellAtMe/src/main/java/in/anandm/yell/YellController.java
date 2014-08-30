@@ -1,5 +1,7 @@
 package in.anandm.yell;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +35,16 @@ public class YellController {
 
 		logger.info("loading yells : page {}, pageSize {}", page, pageSize);
 
+		YellQuery query = new YellQuery(page, pageSize);
 		return new ResponseEntity<QueryResult<Yell>>(
-				yellRepository.query(new YellQuery(page, pageSize)),
-				HttpStatus.OK);
+				yellRepository.query(query), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/yells", method = RequestMethod.POST)
 	public @ResponseBody
 	ResponseEntity<Yell> addYell(@RequestBody Yell yell) {
 		logger.info("adding yell : {}", yell);
+		yell.setYelledAt(new Date());
 		yellRepository.saveYell(yell);
 		return new ResponseEntity<Yell>(yell, HttpStatus.CREATED);
 	}

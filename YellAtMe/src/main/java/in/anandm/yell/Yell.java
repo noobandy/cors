@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class Yell {
 
-	private Long id;
+	private String id;
 	private String yell;
 	private Date yelledAt;
 
@@ -33,12 +33,20 @@ public class Yell {
 		this.yelledAt = yelledAt;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
+	}
+
+	public void setYell(String yell) {
+		this.yell = yell;
+	}
+
+	public void setYelledAt(Date yelledAt) {
+		this.yelledAt = yelledAt;
 	}
 
 	public String getYell() {
